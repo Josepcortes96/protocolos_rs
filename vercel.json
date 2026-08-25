@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/informacion",
+      "destination": "http://51.255.32.148/informacion"
+    },
+    {
+      "source": "/((?!api/.*).*)",
+      "destination": "/index.html"
+    }
+  ]
+}

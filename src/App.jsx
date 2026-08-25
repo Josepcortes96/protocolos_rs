@@ -1,6 +1,23 @@
 import { useEffect, useMemo, useState } from "react";
 
-const INFORMACION_ENDPOINT = import.meta.env.VITE_INFORMACION_ENDPOINT;
+function getInformacionEndpoint() {
+  const configuredEndpoint = import.meta.env.VITE_INFORMACION_ENDPOINT;
+
+  if (!configuredEndpoint || configuredEndpoint === "/informacion") {
+    return "/api/informacion";
+  }
+
+  if (
+    window.location.protocol === "https:" &&
+    configuredEndpoint.startsWith("http://")
+  ) {
+    return "/api/informacion";
+  }
+
+  return configuredEndpoint;
+}
+
+const INFORMACION_ENDPOINT = getInformacionEndpoint();
 
 function DocumentIcon() {
   return (
