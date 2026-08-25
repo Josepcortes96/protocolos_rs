@@ -69,6 +69,10 @@ function groupInformaciones(items) {
   }, {});
 }
 
+function getPdfViewerUrl(url) {
+  return `https://docs.google.com/gview?embedded=1&url=${encodeURIComponent(url)}`;
+}
+
 function Modal({ info, onClose }) {
   if (!info) return null;
 
@@ -103,7 +107,7 @@ function Modal({ info, onClose }) {
         </header>
         <iframe
           title={info.titulo}
-          src={info.url_informacion}
+          src={getPdfViewerUrl(info.url_informacion)}
           className="min-h-0 flex-1 border-0 bg-slate-50"
         />
       </div>
