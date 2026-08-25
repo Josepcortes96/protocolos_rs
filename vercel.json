@@ -5,6 +5,10 @@
       "destination": "http://51.255.32.148/informacion"
     },
     {
+      "source": "/pdf/:path*",
+      "destination": "https://pub-5c3d4294745645bfb40dddc883e0604a.r2.dev/:path*"
+    },
+    {
       "source": "/((?!api/.*).*)",
       "destination": "/index.html"
     }

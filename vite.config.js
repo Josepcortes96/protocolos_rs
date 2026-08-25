@@ -14,6 +14,11 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ""),
         },
+        "/pdf": {
+          target: "https://pub-5c3d4294745645bfb40dddc883e0604a.r2.dev",
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/pdf/, ""),
+        },
       },
     },
   };

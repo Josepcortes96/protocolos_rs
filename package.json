@@ -6,12 +6,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tailwindcss/vite": "latest",
     "@vitejs/plugin-react": "latest",
-    "vite": "latest",
+    "pdfjs-dist": "^5.6.205",
     "react": "latest",
     "react-dom": "latest",
     "tailwindcss": "latest",
-    "@tailwindcss/vite": "latest"
-  },
-  "devDependencies": {}
+    "vite": "latest"
+  }
 }
