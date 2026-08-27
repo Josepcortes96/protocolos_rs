@@ -326,15 +326,19 @@ function DocumentCard({ info, onView }) {
 
 function SignatureStatus({ signed, date }) {
   if (!signed) {
-    return <span className="text-[15px] font-medium text-muted">Pendiente</span>;
+    return (
+      <span className="inline-flex items-center rounded-full bg-amber-50 px-3 py-1 text-[13px] font-semibold text-amber-700 ring-1 ring-amber-200">
+        Pendiente
+      </span>
+    );
   }
 
   return (
     <div className="flex flex-col items-start gap-1.5">
-      <span className="inline-flex items-center rounded-lg border border-line bg-white px-3 py-1 text-[15px] font-medium leading-none text-ink">
+      <span className="inline-flex items-center rounded-full bg-emerald-50 px-3 py-1 text-[13px] font-semibold leading-none text-emerald-700 ring-1 ring-emerald-200">
         Firmado
       </span>
-      {date && <span className="text-[15px] text-ink">{formatDate(date)}</span>}
+      {date && <span className="text-[14px] text-slate-600">{formatDate(date)}</span>}
     </div>
   );
 }
@@ -449,7 +453,7 @@ function FirmaModal({ row, onClose, onSaved }) {
 
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-black/45 px-4 py-6">
-      <div className="w-[min(620px,calc(100vw-32px))] rounded-lg bg-white shadow-2xl">
+      <div className="w-[min(620px,calc(100vw-32px))] overflow-hidden rounded-lg bg-white shadow-2xl">
         <header className="flex items-start justify-between gap-5 border-b border-line px-6 py-5">
           <div>
             <h2 className="text-lg font-semibold text-ink">Firma trabajador/a</h2>
@@ -466,6 +470,9 @@ function FirmaModal({ row, onClose, onSaved }) {
         </header>
 
         <div className="space-y-4 px-6 py-5">
+          <div className="rounded-lg bg-slate-50 px-4 py-3 text-sm text-slate-600">
+            Firma en el recuadro inferior y guarda para registrar esta formacion.
+          </div>
           <SignatureCanvas onChange={setSignature} clearSignal={clearSignal} />
           {error && <p className="text-[15px] font-medium text-red-700">{error}</p>}
           <div className="flex justify-end gap-3 max-sm:flex-col">
@@ -560,48 +567,41 @@ function ResumenModal({ rows, employeeName, onClose }) {
 
 function FormacionesTable({ rows, onSign }) {
   return (
-    <div className="overflow-hidden rounded-lg border border-line bg-white">
-      <div className="grid grid-cols-[1.45fr_1fr_1fr_1fr_1fr] border-b border-line bg-white text-[15px] font-medium text-slate-700 max-lg:hidden">
-        <div className="px-5 py-4">Departamento</div>
-        <div className="px-5 py-4">Formador/a</div>
-        <div className="px-5 py-4">Sesion</div>
-        <div className="px-5 py-4">Firma formador/a</div>
-        <div className="px-5 py-4">Firma trabajador/a</div>
+    <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+      <div className="grid grid-cols-[1.6fr_1fr_1fr_1fr] border-b border-slate-200 bg-slate-50 text-[13px] font-bold uppercase tracking-wide text-slate-500 max-lg:hidden">
+        <div className="px-6 py-4">Departamento</div>
+        <div className="px-6 py-4">Formador/a</div>
+        <div className="px-6 py-4">Sesion</div>
+        <div className="px-6 py-4">Firma trabajador/a</div>
       </div>
 
-      <div className="divide-y divide-line">
+      <div className="divide-y divide-slate-100">
         {rows.map((row) => (
           <div
             key={row.id_registro}
-            className="grid min-h-[86px] grid-cols-[1.45fr_1fr_1fr_1fr_1fr] items-center text-[16px] text-ink max-lg:grid-cols-1 max-lg:gap-3 max-lg:px-5 max-lg:py-4"
+            className="grid min-h-[92px] grid-cols-[1.6fr_1fr_1fr_1fr] items-center text-[16px] text-ink transition hover:bg-slate-50/70 max-lg:grid-cols-1 max-lg:gap-3 max-lg:px-5 max-lg:py-4"
           >
-            <div className="flex min-w-0 items-center gap-3 px-5 py-4 max-lg:px-0 max-lg:py-0">
+            <div className="flex min-w-0 items-center gap-3 px-6 py-4 max-lg:px-0 max-lg:py-0">
               <span
                 className="h-2.5 w-2.5 shrink-0 rounded-full"
                 style={{ backgroundColor: getDepartmentColor(row.id_departamento) }}
               />
-              <span className="[overflow-wrap:anywhere]">{row.departamento}</span>
+              <span className="[overflow-wrap:anywhere] font-medium">{row.departamento}</span>
             </div>
-            <div className="px-5 py-4 max-lg:px-0 max-lg:py-0">
+            <div className="px-6 py-4 text-slate-700 max-lg:px-0 max-lg:py-0">
               {row.delegado || row.responsable || "-"}
             </div>
-            <div className="whitespace-pre-line px-5 py-4 max-lg:px-0 max-lg:py-0">
+            <div className="whitespace-pre-line px-6 py-4 text-slate-700 max-lg:px-0 max-lg:py-0">
               {formatSession(row) || "-"}
             </div>
-            <div className="px-5 py-4 max-lg:px-0 max-lg:py-0">
-              <SignatureStatus
-                signed={Boolean(row.firma_formador || row.fecha_firma_formador)}
-                date={row.fecha_firma_formador}
-              />
-            </div>
-            <div className="flex items-center gap-3 px-5 py-4 max-lg:px-0 max-lg:py-0">
+            <div className="flex items-center gap-3 px-6 py-4 max-lg:px-0 max-lg:py-0">
               {row.firma_empleado || row.fecha_firma_empleado ? (
                 <SignatureStatus signed date={row.fecha_firma_empleado} />
               ) : (
                 <button
                   type="button"
                   onClick={() => onSign(row)}
-                  className="rounded-lg border border-ink bg-ink px-3.5 py-2 text-sm font-semibold text-white transition hover:bg-[#2b2948]"
+                  className="rounded-lg border border-emerald-700 bg-emerald-700 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-800"
                 >
                   Firmar
                 </button>
@@ -681,12 +681,26 @@ function AccessPage() {
   }
 
   return (
-    <main className="min-h-screen bg-white px-1 py-6 text-ink sm:px-5">
+    <main className="min-h-screen bg-[#f7f8fa] px-4 py-7 text-ink sm:px-6 lg:px-8">
       <section className="mx-auto w-full max-w-[1760px]">
-        <h1 className="mb-8 text-2xl font-semibold text-ink">Formaciones</h1>
+        <div className="mb-7 flex items-end justify-between gap-5 max-sm:flex-col max-sm:items-start">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-wide text-emerald-700">
+              Acceso empleado
+            </p>
+            <h1 className="mt-2 text-[30px] font-semibold leading-tight text-ink">
+              Formaciones
+            </h1>
+          </div>
+          {empleadoId && !loading && !error && (
+            <div className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 shadow-sm">
+              ID empleado: <span className="text-ink">{empleadoId}</span>
+            </div>
+          )}
+        </div>
 
         {!empleadoId && (
-          <p className="rounded-lg border border-line bg-white p-5 text-[15px] text-muted">
+          <p className="rounded-lg border border-slate-200 bg-white p-5 text-[15px] text-muted shadow-sm">
             Falta el identificador del empleado en la URL. Usa /acceso/id.
           </p>
         )}
@@ -700,9 +714,9 @@ function AccessPage() {
         {error && <p className="text-[15px] font-medium text-red-700">{error}</p>}
 
         {!loading && !error && empleadoId && (
-          <div className="rounded-xl border border-line bg-slate-50/60 p-5 shadow-sm">
-            <section className="overflow-hidden rounded-lg border border-line bg-white">
-              <header className="flex items-center justify-between gap-4 px-5 py-5 max-sm:flex-col max-sm:items-start">
+          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
+            <section className="overflow-hidden rounded-lg border border-slate-200 bg-white">
+              <header className="flex items-center justify-between gap-4 bg-white px-6 py-5 max-sm:flex-col max-sm:items-start">
                 <button
                   type="button"
                   onClick={() => setIsOpen((value) => !value)}
@@ -716,16 +730,16 @@ function AccessPage() {
                   <button
                     type="button"
                     onClick={() => setShowResumen(true)}
-                    className="rounded-md border border-ink bg-white px-3 py-1.5 text-sm font-medium text-ink"
+                    className="rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm font-semibold text-ink shadow-sm transition hover:border-ink"
                   >
                     Ver Resumen
                   </button>
-                  <span className="text-[16px] font-medium text-ink">
+                  <span className="rounded-full bg-slate-100 px-3 py-1.5 text-[15px] font-semibold text-ink">
                     {signedCount}/{rows.length}
                   </span>
                   <span
                     aria-hidden="true"
-                    className="h-6 w-6 rounded-full border-[3px] border-emerald-700"
+                    className="h-6 w-6 rounded-full border-[3px] border-emerald-700 bg-emerald-50"
                   />
                 </div>
               </header>
