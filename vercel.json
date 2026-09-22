@@ -2,11 +2,11 @@
   "rewrites": [
     {
       "source": "/api/informacion",
-      "destination": "http://51.255.32.148/informacion"
+      "destination": "https://services.rsramonsoler.com/informacion"
     },
     {
       "source": "/api/formaciones/:path*",
-      "destination": "http://51.255.32.148/formaciones/:path*"
+      "destination": "https://services.rsramonsoler.com/formaciones/:path*"
     },
     {
       "source": "/pdf/:path*",
